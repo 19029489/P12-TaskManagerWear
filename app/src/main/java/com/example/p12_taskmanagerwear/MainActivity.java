@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -53,6 +55,21 @@ public class MainActivity extends AppCompatActivity {
 
         aa = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, al);
         lv.setAdapter(aa);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Task selected = al.get(position);
+
+                Intent i = new Intent(MainActivity.this, EditActivity.class);
+                i.putExtra("taskName", "" + selected.getTaskName());
+                i.putExtra("taskDesc", selected.getDesc());
+                i.putExtra("id", selected.getId());
+                startActivity(i);
+
+            }
+        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
