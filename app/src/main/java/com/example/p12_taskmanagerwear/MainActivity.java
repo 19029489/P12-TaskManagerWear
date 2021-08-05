@@ -34,29 +34,24 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.buttonAdd);
 
         al = new ArrayList<Task>();
-
         al = db.getAllTasks();
 
         aa = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, al);
         lv.setAdapter(aa);
 
-//        CharSequence reply = null;
-//        Intent intent = getIntent();
-//
-//        long id = intent.getLongExtra("id", 0);
-//
-//        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
-//        if (remoteInput != null) {
-//            reply = remoteInput.getCharSequence("status");
-//        }
-//
-//        if (reply != null && reply.toString().equalsIgnoreCase("Completed")) {
-//
-//            db.deleteTask(id);
-//            al.clear();
-//            al = db.getAllTasks();
-//            aa.notifyDataSetChanged();
-//        }
+        CharSequence reply = null;
+        Intent intent = getIntent();
+
+        long id = intent.getLongExtra("id", 0);
+
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        if (remoteInput != null) {
+            reply = remoteInput.getCharSequence("status");
+        }
+
+        if (reply != null && reply.toString().equalsIgnoreCase("Completed")) {
+            db.deleteTask(id);
+        }
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,27 +62,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        CharSequence reply = null;
-        Intent intent = getIntent();
-
-        long id = intent.getLongExtra("id", 0);
-        Log.d("id:", id+"");
-
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
-        if (remoteInput != null) {
-            reply = remoteInput.getCharSequence("status");
-        }
-
-        if (reply != null && reply.toString().equalsIgnoreCase("Completed")) {
-
-            db.deleteTask(id);
-            al.clear();
-            al = db.getAllTasks();
-            aa.notifyDataSetChanged();
-        }
-    }
 }

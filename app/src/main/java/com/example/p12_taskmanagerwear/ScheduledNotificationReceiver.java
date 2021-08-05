@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -29,8 +30,6 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         long id = intent.getLongExtra("id", 0);
         String task_name = intent.getStringExtra("task_name");
         String task_desc = intent.getStringExtra("task_desc");
-
-        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -50,7 +49,8 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "Launch Task Manager", pIntent).build();
 
         Intent intentreply = new Intent(context, MainActivity.class);
-        intent.putExtra("id", id);
+        intentreply.putExtra("id", id);
+
         PendingIntent pendingIntentReply = PendingIntent.getActivity(context, 0, intentreply, PendingIntent.FLAG_UPDATE_CURRENT);
 
         RemoteInput ri = new RemoteInput.Builder("status")
@@ -66,15 +66,11 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         extender.addAction(action);
         extender.addAction(action2);
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info);
-
         // build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
         builder.setContentTitle("Task");
         builder.setContentText(task_name + "\n" + task_desc);
         builder.setSmallIcon(R.mipmap.ic_launcher);
-//        builder.setLargeIcon(largeIcon);
-//        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(largeIcon).bigLargeIcon(null));
         builder.setAutoCancel(true);
 
         builder.extend(extender);
