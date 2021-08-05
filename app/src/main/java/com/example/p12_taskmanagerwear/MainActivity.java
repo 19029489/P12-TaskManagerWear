@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.buttonAdd);
 
         al = new ArrayList<Task>();
-        al = db.getAllTasks();
-
-        aa = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, al);
-        lv.setAdapter(aa);
 
         CharSequence reply = null;
         Intent intent = getIntent();
@@ -52,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
         if (reply != null && reply.toString().equalsIgnoreCase("Completed")) {
             db.deleteTask(id);
         }
+
+        al = db.getAllTasks();
+
+        aa = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, al);
+        lv.setAdapter(aa);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

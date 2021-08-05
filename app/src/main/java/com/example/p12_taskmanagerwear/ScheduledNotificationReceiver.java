@@ -62,9 +62,23 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
                 .addRemoteInput(ri)
                 .build();
 
+        Intent intentAdd = new Intent(context, AddActivity.class);
+        intentreply.putExtra("id", id);
+
+        PendingIntent pendingIntentAdd = PendingIntent.getActivity(context, 0, intentAdd, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        RemoteInput ri2 = new RemoteInput.Builder("status2")
+                .setLabel("Status report")
+                .build();
+
+        NotificationCompat.Action action3 = new NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "Add", pendingIntentAdd)
+                .addRemoteInput(ri2)
+                .build();
+
         NotificationCompat.WearableExtender extender = new NotificationCompat.WearableExtender();
         extender.addAction(action);
         extender.addAction(action2);
+        extender.addAction(action3);
 
         // build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");

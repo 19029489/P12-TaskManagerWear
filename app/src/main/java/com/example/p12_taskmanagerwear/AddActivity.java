@@ -5,12 +5,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.RemoteInput;
 
 import java.util.Calendar;
 
@@ -31,9 +33,22 @@ public class AddActivity extends AppCompatActivity {
         btnAddTask = findViewById(R.id.buttonAddTask);
         btnCancel = findViewById(R.id.buttonCancel);
 
+        CharSequence reply = null;
+        Intent intent1 = getIntent();
+
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent1);
+        if (remoteInput != null) {
+            reply = remoteInput.getCharSequence("status2");
+        }
+
+        if (reply != null) {
+            etDesc.setText("" + reply);
+        }
+
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 DBHelper db = new DBHelper(AddActivity.this);
                 String taskName = "";
                 if (etName.getText().toString().equalsIgnoreCase("")){
@@ -83,7 +98,8 @@ public class AddActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent o = new Intent(AddActivity.this, MainActivity.class);
+                startActivity(o);
             }
         });
     }
